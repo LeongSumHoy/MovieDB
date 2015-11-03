@@ -21,11 +21,11 @@ public class MovieAdapter extends BaseAdapter {
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
     private Context context;
     private String[] url;
-    private List<Movies> movieList = new ArrayList<Movies>();
+    private Movies[] movieList;
 
     public MovieAdapter() {}
 
-    public MovieAdapter(Activity context, List<Movies> movieList) {
+    public MovieAdapter(Activity context, Movies[] movieList) {
         Log.d(LOG_TAG,"MovieAdapter");
         this.context = context;
         //this.url = url;
@@ -39,13 +39,13 @@ public class MovieAdapter extends BaseAdapter {
             Log.d(LOG_TAG, "count 0");
             return 0;
         }
-        Log.d(LOG_TAG, String.valueOf(movieList.size()) );
-        return movieList.size();
+        Log.d(LOG_TAG, String.valueOf(movieList.length) );
+        return movieList.length;
     }
 
     public Object getItem(int position) {
         Log.d(LOG_TAG, "getItem");
-        return movieList.get(position);
+        return movieList[position];
     }
 
     public long getItemId(int position) {
@@ -53,14 +53,11 @@ public class MovieAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void setDataChange(List<Movies> movies) {
-
-        movieList = movies;
+    public void setDataChange(Movies[] movieList) {
         Log.d(LOG_TAG, "setDataChage");
-        Log.d(LOG_TAG, String.valueOf(movieList.size()));
 
         if (movieList == null) { Log.d(LOG_TAG, "movieList is null !"); }
-        this.movieList = movies;
+        this.movieList = movieList;
         notifyDataSetChanged();
     }
 
@@ -78,10 +75,8 @@ public class MovieAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        Log.d(LOG_TAG, String.valueOf(position));
-        Log.d(LOG_TAG, movieList.get(position).url);
         //load values
-        Picasso.with(context).load(movieList.get(position).url).into(imageView);
+        Picasso.with(context).load(movieList[position].url).into(imageView);
 
         return imageView;
     }

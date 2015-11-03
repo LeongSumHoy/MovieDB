@@ -36,7 +36,7 @@ public class MovieFragment extends Fragment {
     private final String LOG_TAG = MovieFragment.class.getSimpleName();
     private MovieAdapter movieAdapter;
     private String[] url = {"http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "http://image.tmdb.org/t/p/w185//bHarw8xrmQeqf3t8HpuMY7zoK4x.jpg"};
-    private List<Movies> movieList = new ArrayList<Movies>();
+    private Movies[] movieList;
 
 
     public MovieFragment() {}
@@ -95,13 +95,13 @@ public class MovieFragment extends Fragment {
     }
 
 /* */
-    public class FetchMoviesTask extends AsyncTask<String, Void, List<Movies>  > {
+    public class FetchMoviesTask extends AsyncTask<String, Void, Movies[]  > {
         private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
         private Activity context;
 
         public FetchMoviesTask() {   }
 
-        private List<Movies> getMovieDataFromJSON(String discoverMoviesStr) throws JSONException {
+        private Movies[] getMovieDataFromJSON(String discoverMoviesStr) throws JSONException {
         final String M_RESULTS = "results";
         final String M_ORG_TITLE = "original_title";
         final String M_POSTER_PATH = "poster_path";
@@ -109,10 +109,11 @@ public class MovieFragment extends Fragment {
         final String M_OVERVIEW = "overview";
         final String M_VOTE_AVG = "vote_average";
         final String M_RELEASE_DATE = "release_date";
-        Log.d(LOG_TAG, discoverMoviesStr);
+
             JSONObject movieJson = new JSONObject(discoverMoviesStr);
             JSONArray movieArray = movieJson.getJSONArray(M_RESULTS);
-            Movies[] m = new Movies[movieArray.length()];
+            movieList = new Movies[movieArray.length()];
+            movieList[0] = new Movies();
             Log.d(LOG_TAG, String.valueOf(movieArray.length()));
             for (int i = 0; i < movieArray.length(); i++) {
                 String original_title;
@@ -122,6 +123,8 @@ public class MovieFragment extends Fragment {
                 String release_date;
                 String poster_path;
                 String BASE_URL = "http://image.tmdb.org/t/p";
+                String PIC_SIZE = "w185";
+
                 JSONObject movie = movieArray.getJSONObject(i);
                 original_title = movie.getString(M_ORG_TITLE);
                 backdrop_path = movie.getString(M_BACKDROP_PATH);
@@ -129,23 +132,15 @@ public class MovieFragment extends Fragment {
                 overview = movie.getString(M_OVERVIEW);
                 vote_average = movie.getString(M_VOTE_AVG);
                 release_date = movie.getString(M_RELEASE_DATE);
-                Log.d(LOG_TAG, original_title + ", " + release_date + ", " + poster_path + ", " + backdrop_path);
-  //               movieList[i] =  original_title+ ", "+release_date+ ", "+vote_average+ ", "+overview+", "+backdrop_path;
 
-                m[i].url = BASE_URL+backdrop_path;
-                m[i].title = original_title;
-                m[i].plot = overview;
-                m[i].rating = vote_average;
-                m[i].release_date = release_date;
-                movieList.add(i, m[i]);
+                movieList[i] = new Movies(BASE_URL+PIC_SIZE+backdrop_path, original_title, overview, vote_average, release_date);
 
-                Log.d(LOG_TAG, movieList.get(i).url);
         }
 
         return movieList;
     }
     @Override
-    protected List<Movies> doInBackground(String... params) {
+    protected Movies[] doInBackground(String... params) {
         // form url
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -204,12 +199,10 @@ public class MovieFragment extends Fragment {
         return null;
     }
     @Override
-    protected void onPostExecute(List<Movies> movies) {
+    protected void onPostExecute(Movies[] movieList) {
         Log.d(LOG_TAG, "onPostExecute");
 
-        movieList = movies;
         movieAdapter.setDataChange(movieList);
-
     }
 }
 
