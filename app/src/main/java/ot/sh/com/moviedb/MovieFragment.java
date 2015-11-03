@@ -140,7 +140,7 @@ public class MovieFragment extends Fragment {
                 movieList.add(i, m[i]);
 
                 Log.d(LOG_TAG, movieList.get(i).url);
-        }L
+        }
 
         return movieList;
     }
