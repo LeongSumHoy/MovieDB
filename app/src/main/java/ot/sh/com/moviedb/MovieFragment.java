@@ -13,7 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -35,7 +37,6 @@ import java.util.List;
 public class MovieFragment extends Fragment {
     private final String LOG_TAG = MovieFragment.class.getSimpleName();
     private MovieAdapter movieAdapter;
-    private String[] url = {"http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "http://image.tmdb.org/t/p/w185//bHarw8xrmQeqf3t8HpuMY7zoK4x.jpg"};
     private Movies[] movieList;
 
 
@@ -57,6 +58,11 @@ public class MovieFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_movie, container, false);
+        // spinner
+        Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.sort_options, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        spinner.setAdapter(adapter);
         // gridview
         GridView gridview = (GridView) rootView.findViewById(R.id.gridView);
         movieAdapter = new MovieAdapter(getActivity(), movieList);
@@ -122,7 +128,7 @@ public class MovieFragment extends Fragment {
                 String vote_average;
                 String release_date;
                 String poster_path;
-                String BASE_URL = "http://image.tmdb.org/t/p";
+                String BASE_URL = "http://image.tmdb.org/t/p/";
                 String PIC_SIZE = "w185";
 
                 JSONObject movie = movieArray.getJSONObject(i);
