@@ -63,6 +63,8 @@ public class MovieFragment extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.sort_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new SpinnerActivity());
+
         // gridview
         GridView gridview = (GridView) rootView.findViewById(R.id.gridView);
         movieAdapter = new MovieAdapter(getActivity(), movieList);
