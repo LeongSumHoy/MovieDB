@@ -23,39 +23,27 @@ public class MovieAdapter extends BaseAdapter {
     private String[] url;
     private Movies[] movieList;
 
-    public MovieAdapter() {}
-
     public MovieAdapter(Activity context, Movies[] movieList) {
-        Log.d(LOG_TAG,"MovieAdapter");
         this.context = context;
-        //this.url = url;
-         this.movieList = movieList;
+        this.movieList = movieList;
     }
 
     public int getCount() {
-        Log.d(LOG_TAG, "getCount");
-
         if (movieList == null) {
-            Log.d(LOG_TAG, "count 0");
             return 0;
         }
-        Log.d(LOG_TAG, String.valueOf(movieList.length) );
         return movieList.length;
     }
 
     public Object getItem(int position) {
-        Log.d(LOG_TAG, "getItem");
         return movieList[position];
     }
 
     public long getItemId(int position) {
-        Log.d(LOG_TAG, "getItemId");
         return 0;
     }
 
     public void setDataChange(Movies[] movieList) {
-        Log.d(LOG_TAG, "setDataChage");
-
         if (movieList == null) { Log.d(LOG_TAG, "movieList is null !"); }
         this.movieList = movieList;
         notifyDataSetChanged();
@@ -64,11 +52,10 @@ public class MovieAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
 
-        Log.d(LOG_TAG, "getView");
         // prepare imageview
         if (convertView == null) {
             imageView = new ImageView(context);
-            imageView.setLayoutParams(new GridView.LayoutParams(200, 200));
+            imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {

@@ -13,7 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.GridView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -26,8 +29,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,11 +36,7 @@ import java.util.List;
 public class MovieFragment extends Fragment {
     private final String LOG_TAG = MovieFragment.class.getSimpleName();
     private MovieAdapter movieAdapter;
-    private String[] url = {"http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg", "http://image.tmdb.org/t/p/w185//bHarw8xrmQeqf3t8HpuMY7zoK4x.jpg"};
     private Movies[] movieList;
-
-
-    public MovieFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,8 +54,24 @@ public class MovieFragment extends Fragment {
 
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_movie, container, false);
-        // gridview
-        GridView gridview = (GridView) rootView.findViewById(R.id.gridView);
+
+        // spinner
+        Spinner spinner = (Spinner) rootView.findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.sort_choices, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(parent.getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+                updateMovies();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+                // gridview
+                GridView gridview = (GridView) rootView.findViewById(R.id.gridView);
         movieAdapter = new MovieAdapter(getActivity(), movieList);
         gridview.setAdapter(movieAdapter);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -89,7 +102,6 @@ public class MovieFragment extends Fragment {
     }
 
     private void updateMovies() {
-        Log.d(LOG_TAG, "updateMovies");
         FetchMoviesTask movieTask = new FetchMoviesTask();
         movieTask.execute();
     }
@@ -122,8 +134,8 @@ public class MovieFragment extends Fragment {
                 String vote_average;
                 String release_date;
                 String poster_path;
-                String BASE_URL = "http://image.tmdb.org/t/p";
-                String PIC_SIZE = "w185";
+                String BASE_URL = "http://image.tmdb.org/t/p/";
+                String PIC_SIZE = "w342";
 
                 JSONObject movie = movieArray.getJSONObject(i);
                 original_title = movie.getString(M_ORG_TITLE);
@@ -134,7 +146,6 @@ public class MovieFragment extends Fragment {
                 release_date = movie.getString(M_RELEASE_DATE);
 
                 movieList[i] = new Movies(BASE_URL+PIC_SIZE+backdrop_path, original_title, overview, vote_average, release_date);
-
         }
 
         return movieList;
@@ -152,6 +163,7 @@ public class MovieFragment extends Fragment {
             final String DISCOVER_BASE_URL = "http://api.themoviedb.org/3/discover/movie?";
             final String SORT_PARAM = "sort_by";
             final String KEY_PARAM = "api_key";
+
             Uri builtUri = Uri.parse(DISCOVER_BASE_URL).buildUpon()
                     .appendQueryParameter(SORT_PARAM, sort_order)
                     .appendQueryParameter(KEY_PARAM, key)
