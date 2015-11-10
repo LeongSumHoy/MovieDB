@@ -1,6 +1,7 @@
 package ot.sh.com.moviedb;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ import java.net.URL;
 public class MovieFragment extends Fragment {
     private final String LOG_TAG = MovieFragment.class.getSimpleName();
     private MovieAdapter movieAdapter;
-    private Movies[] movieList;
+    private Movie[] movieList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,14 +71,18 @@ public class MovieFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-                // gridview
-                GridView gridview = (GridView) rootView.findViewById(R.id.gridView);
+        // gridview
+        GridView gridview = (GridView) rootView.findViewById(R.id.gridView);
         movieAdapter = new MovieAdapter(getActivity(), movieList);
         gridview.setAdapter(movieAdapter);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(), " " + position, Toast.LENGTH_SHORT).show();
+                String movieDetailStr = movieList[position].url+" | "+movieList[position].title+" | "+movieList[position].plot+" | "+movieList[position].rating+" | "+movieList[position].release_date;
+                Log.d(LOG_TAG, movieDetailStr);
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class).putExtra(Intent.EXTRA_TEXT, movieDetailStr);
+                startActivity(intent);
             }
         });
 
@@ -94,7 +99,7 @@ public class MovieFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d(LOG_TAG, "onOptionsItemSelected");
         int id = item.getItemId();
-        if (id == R.id.action_refresh) {
+        if (id == R.id.action_sort) {
             updateMovies();
             return true;
         }
@@ -107,13 +112,13 @@ public class MovieFragment extends Fragment {
     }
 
 /* */
-    public class FetchMoviesTask extends AsyncTask<String, Void, Movies[]  > {
+    public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]  > {
         private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
         private Activity context;
 
         public FetchMoviesTask() {   }
 
-        private Movies[] getMovieDataFromJSON(String discoverMoviesStr) throws JSONException {
+        private Movie[] getMovieDataFromJSON(String discoverMoviesStr) throws JSONException {
         final String M_RESULTS = "results";
         final String M_ORG_TITLE = "original_title";
         final String M_POSTER_PATH = "poster_path";
@@ -124,8 +129,8 @@ public class MovieFragment extends Fragment {
 
             JSONObject movieJson = new JSONObject(discoverMoviesStr);
             JSONArray movieArray = movieJson.getJSONArray(M_RESULTS);
-            movieList = new Movies[movieArray.length()];
-            movieList[0] = new Movies();
+            movieList = new Movie[movieArray.length()];
+            movieList[0] = new Movie();
             Log.d(LOG_TAG, String.valueOf(movieArray.length()));
             for (int i = 0; i < movieArray.length(); i++) {
                 String original_title;
@@ -145,13 +150,14 @@ public class MovieFragment extends Fragment {
                 vote_average = movie.getString(M_VOTE_AVG);
                 release_date = movie.getString(M_RELEASE_DATE);
 
-                movieList[i] = new Movies(BASE_URL+PIC_SIZE+backdrop_path, original_title, overview, vote_average, release_date);
+                movieList[i] = new Movie(BASE_URL+PIC_SIZE+poster_path, original_title, overview, vote_average, release_date);
         }
 
         return movieList;
     }
+
     @Override
-    protected Movies[] doInBackground(String... params) {
+    protected Movie[] doInBackground(String... params) {
         // form url
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -211,7 +217,7 @@ public class MovieFragment extends Fragment {
         return null;
     }
     @Override
-    protected void onPostExecute(Movies[] movieList) {
+    protected void onPostExecute(Movie[] movieList) {
         Log.d(LOG_TAG, "onPostExecute");
 
         movieAdapter.setDataChange(movieList);

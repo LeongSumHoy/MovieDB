@@ -34,7 +34,7 @@ public class MainActivity extends ActionBarActivity {
             startActivity(new Intent(this, SettingsActivity.class));
             return true;
         }
-        if (id == R.id.action_refresh) {
+        if (id == R.id.action_sort) {
 
             return true;
         }

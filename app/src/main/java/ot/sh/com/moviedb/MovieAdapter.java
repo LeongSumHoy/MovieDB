@@ -21,9 +21,9 @@ public class MovieAdapter extends BaseAdapter {
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
     private Context context;
     private String[] url;
-    private Movies[] movieList;
+    private Movie[] movieList;
 
-    public MovieAdapter(Activity context, Movies[] movieList) {
+    public MovieAdapter(Activity context, Movie[] movieList) {
         this.context = context;
         this.movieList = movieList;
     }
@@ -43,7 +43,7 @@ public class MovieAdapter extends BaseAdapter {
         return 0;
     }
 
-    public void setDataChange(Movies[] movieList) {
+    public void setDataChange(Movie[] movieList) {
         if (movieList == null) { Log.d(LOG_TAG, "movieList is null !"); }
         this.movieList = movieList;
         notifyDataSetChanged();
@@ -55,8 +55,8 @@ public class MovieAdapter extends BaseAdapter {
         // prepare imageview
         if (convertView == null) {
             imageView = new ImageView(context);
-            imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
             imageView.setPadding(8, 8, 8, 8);
         } else {
             imageView = (ImageView) convertView;
