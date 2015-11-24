@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Created by brandon on 28/10/2015.
  */
@@ -21,9 +22,9 @@ public class MovieAdapter extends BaseAdapter {
     private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
     private Context context;
     private String[] url;
-    private Movie[] movieList;
+    private ArrayList<Movie> movieList;
 
-    public MovieAdapter(Activity context, Movie[] movieList) {
+    public MovieAdapter(Activity context, ArrayList<Movie> movieList) {
         this.context = context;
         this.movieList = movieList;
     }
@@ -32,18 +33,20 @@ public class MovieAdapter extends BaseAdapter {
         if (movieList == null) {
             return 0;
         }
-        return movieList.length;
+        return movieList.size();
     }
 
-    public Object getItem(int position) {
-        return movieList[position];
-    }
-
+    @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
-    public void setDataChange(Movie[] movieList) {
+    @Override
+    public Movie getItem(int position) {
+        return movieList.get(position);
+    }
+
+    public void setDataChange(ArrayList<Movie> movieList) {
         if (movieList == null) { Log.d(LOG_TAG, "movieList is null !"); }
         this.movieList = movieList;
         notifyDataSetChanged();
@@ -52,6 +55,7 @@ public class MovieAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ImageView imageView;
 
+        // Movie movie = getItem(position);
         // prepare imageview
         if (convertView == null) {
             imageView = new ImageView(context);
@@ -63,7 +67,7 @@ public class MovieAdapter extends BaseAdapter {
         }
 
         //load values
-        Picasso.with(context).load(movieList[position].url).into(imageView);
+        Picasso.with(context).load(movieList.get(position).url).into(imageView);
 
         return imageView;
     }

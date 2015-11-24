@@ -55,8 +55,7 @@ public class MovieDetailActivity extends ActionBarActivity {
 
     public static class MovieDetailFragment extends Fragment {
         private final String LOG_TAG = MovieDetailFragment.class.getSimpleName();
-        private String movieDetail;
-        private char delimiter = '|';
+        private Movie movieDetail;
 
         public MovieDetailFragment() { setHasOptionsMenu(true); }
 
@@ -67,8 +66,24 @@ public class MovieDetailActivity extends ActionBarActivity {
 
             // The detail Activity called via intent.  Inspect the intent for forecast data.
             Intent intent = getActivity().getIntent();
-            if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-                movieDetail = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+            if (intent != null) {
+            // if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
+
+                movieDetail = intent.getExtras().getParcelable("movie");
+                Log.d(LOG_TAG, movieDetail.title);
+                Log.d(LOG_TAG, movieDetail.plot);
+                Log.d(LOG_TAG, movieDetail.rating);
+                Log.d(LOG_TAG, movieDetail.release_date);
+                Log.d(LOG_TAG, movieDetail.url);
+
+                ((TextView) rootView.findViewById(R.id.title_textview)).setText(movieDetail.title);
+                ((TextView) rootView.findViewById(R.id.plot_textview)).setText(movieDetail.plot);
+                 Float new_rate = Float.parseFloat(movieDetail.rating)/10*5;
+                ((RatingBar) rootView.findViewById(R.id.rating_bar)).setRating(new_rate);
+                ((TextView) rootView.findViewById(R.id.release_date_textview)).setText(movieDetail.release_date);
+                Picasso.with(getActivity()).load(movieDetail.url).into((ImageView) rootView.findViewById(R.id.detailImageViewer));
+                /*
                 TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(delimiter);
                 splitter.setString(movieDetail);
                 int i=0;
@@ -92,6 +107,7 @@ public class MovieDetailActivity extends ActionBarActivity {
                     Log.d(LOG_TAG, i+s);
                     i++;
                 }
+                */
 /*
                 ((TextView) rootView.findViewById(R.id.title_textview))
                         .setText(splitter[1]);

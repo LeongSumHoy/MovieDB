@@ -30,6 +30,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,15 +39,30 @@ import java.net.URL;
 public class MovieFragment extends Fragment {
     private final String LOG_TAG = MovieFragment.class.getSimpleName();
     private MovieAdapter movieAdapter;
-    private Movie[] movieList;
+    private ArrayList<Movie> movieList = new ArrayList<Movie>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate");
         // Add this line in order for this fragment to handle menu events.
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState == null || !savedInstanceState.containsKey("movies")) {
+            updateMovies();
+            Log.d(LOG_TAG, "YYY " + String.valueOf(movieList.size()));
+        }
+        else {
+            movieList = savedInstanceState.getParcelableArrayList("movies");
+        }
         setHasOptionsMenu(true);
         updateMovies();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.d(LOG_TAG, "onSaveInstanceState");
+        outState.putParcelableArrayList("movies", movieList);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -73,15 +90,16 @@ public class MovieFragment extends Fragment {
 
         // gridview
         GridView gridview = (GridView) rootView.findViewById(R.id.gridView);
+        Log.d(LOG_TAG, "onCreateView "+String.valueOf(movieList.size()));
         movieAdapter = new MovieAdapter(getActivity(), movieList);
         gridview.setAdapter(movieAdapter);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(), " " + position, Toast.LENGTH_SHORT).show();
-                String movieDetailStr = movieList[position].url+" | "+movieList[position].title+" | "+movieList[position].plot+" | "+movieList[position].rating+" | "+movieList[position].release_date;
-                Log.d(LOG_TAG, movieDetailStr);
-                Intent intent = new Intent(getActivity(), MovieDetailActivity.class).putExtra(Intent.EXTRA_TEXT, movieDetailStr);
+              //  String movieDetailStr = movieList.get(position).url+" | "+movieList.get(position).title+" | "+movieList.get(position).plot+" | "+movieList.get(position).rating+" | "+movieList.get(position).release_date;
+                Movie m = movieAdapter.getItem(position);
+                Intent intent = new Intent(getActivity(), MovieDetailActivity.class).putExtra("movie", m);
                 startActivity(intent);
             }
         });
@@ -112,13 +130,13 @@ public class MovieFragment extends Fragment {
     }
 
 /* */
-    public class FetchMoviesTask extends AsyncTask<String, Void, Movie[]  > {
+    public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>  > {
         private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
         private Activity context;
 
         public FetchMoviesTask() {   }
 
-        private Movie[] getMovieDataFromJSON(String discoverMoviesStr) throws JSONException {
+        private ArrayList<Movie> getMovieDataFromJSON(String discoverMoviesStr) throws JSONException {
         final String M_RESULTS = "results";
         final String M_ORG_TITLE = "original_title";
         final String M_POSTER_PATH = "poster_path";
@@ -129,8 +147,9 @@ public class MovieFragment extends Fragment {
 
             JSONObject movieJson = new JSONObject(discoverMoviesStr);
             JSONArray movieArray = movieJson.getJSONArray(M_RESULTS);
-            movieList = new Movie[movieArray.length()];
-            movieList[0] = new Movie();
+            ArrayList<Movie> movieList = new ArrayList<Movie>();
+//            movieList = new Movie[movieArray.length() ;
+//            movieList[0] = new Movie();
             Log.d(LOG_TAG, String.valueOf(movieArray.length()));
             for (int i = 0; i < movieArray.length(); i++) {
                 String original_title;
@@ -150,14 +169,15 @@ public class MovieFragment extends Fragment {
                 vote_average = movie.getString(M_VOTE_AVG);
                 release_date = movie.getString(M_RELEASE_DATE);
 
-                movieList[i] = new Movie(BASE_URL+PIC_SIZE+poster_path, original_title, overview, vote_average, release_date);
+                movieList.add(new Movie(BASE_URL + PIC_SIZE + poster_path, original_title, overview, vote_average, release_date));
+                // movieList[i] = new Movie(BASE_URL+PIC_SIZE+poster_path, original_title, overview, vote_average, release_date);
         }
-
+        Log.d(LOG_TAG, "DEBUG "+movieList.size());
         return movieList;
     }
 
     @Override
-    protected Movie[] doInBackground(String... params) {
+    protected ArrayList<Movie> doInBackground(String... params) {
         // form url
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -217,9 +237,10 @@ public class MovieFragment extends Fragment {
         return null;
     }
     @Override
-    protected void onPostExecute(Movie[] movieList) {
+    protected void onPostExecute(ArrayList<Movie> movieList) {
         Log.d(LOG_TAG, "onPostExecute");
 
+        Log.d(LOG_TAG, "DEBUG "+movieList.get(8).title);
         movieAdapter.setDataChange(movieList);
     }
 }
