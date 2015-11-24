@@ -1,16 +1,19 @@
 package ot.sh.com.moviedb;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
 /**
  * Created by brandon on 30/10/2015.
  */
-public class Movie {
+
+public class Movie implements Parcelable {
     String url;
     String title;
     String plot;
     String rating;
     String release_date;
-
-    public Movie() {}
 
     public Movie(String url, String title, String plot, String rating, String release_date) {
         this.url = url;
@@ -19,4 +22,39 @@ public class Movie {
         this.rating = rating;
         this.release_date = release_date;
     }
+
+    private Movie(Parcel in) {
+        url = in.readString();
+        title = in.readString();
+        plot = in.readString();
+        rating = in.readString();
+        release_date = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel p, int i) {
+        p.writeString(url);
+        p.writeString(title);
+        p.writeString(plot);
+        p.writeString(rating);
+        p.writeString(release_date);
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public  Movie createFromParcel(Parcel p) {
+            return new Movie(p);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }
+
