@@ -85,7 +85,7 @@ public class MovieFragment extends Fragment {
                 }
 
                 updateMovies(Util.getSavedPref(getActivity()));
-                Toast.makeText(parent.getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(parent.getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -100,7 +100,7 @@ public class MovieFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), " " + position, Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), " " + position, Toast.LENGTH_SHORT).show();
                 Movie m = movieAdapter.getItem(position);
                 Intent intent = new Intent(getActivity(), MovieDetailActivity.class).putExtra("movie", m);
                 startActivity(intent);
