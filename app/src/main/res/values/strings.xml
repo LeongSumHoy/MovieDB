@@ -3,15 +3,18 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="action_settings">Settings</string>
-    <string name="action_sort">Refresh</string>
+    <string name="action_refresh">Refresh</string>
     <string name="title_activity_detail">Details</string>
     <string name="title_activity_settings">Settings</string>
-    <string name="pref_sort_label">Refresh</string>
-    <string name="pref_sort_key">Sort Order</string>
-    <string name="pref_sort_default">Sort Order</string>
-    <string name="pref_sort_asc">popularity.asc</string>
-    <string name="pref_sort_desc">popularity.desc</string>
-    <string name="pref_sort_label_asc">Ascending</string>
-    <string name="pref_sort_label_desc">Descending</string>
-
+    <string name="pref_sort_key" translatable="false">sort_options</string>
+    <string name="pref_sort_default" translatable="false">popularity.asc</string>
+    <string name="pref_saved_key">ot.sh.com.moviedb</string>
+    <string name="pref_saved_order">ot.sh.com.moviedb.SORTORDER</string>
+    <string name="pref_saved_position">ot.sh.com.moviedb.POSITION</string>
+    <string name="pref_sort_title">Sort By</string>
+    <string name="pref_sort_popularity">popularity.desc</string>
+    <string name="pref_sort_rating">vote_average.desc</string>
+    <string name="pref_sort_label_popular">Most Popular</string>
+    <string name="pref_sort_label_rate">Highest Rating</string>
+    <string name="label_release_date">Release Date :   </string>
 </resources>
