@@ -1,5 +1,6 @@
 package ot.sh.com.moviedb;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
@@ -59,9 +60,9 @@ public class MovieAdapter extends BaseAdapter {
         // prepare imageview
         if (convertView == null) {
             imageView = new ImageView(context);
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setLayoutParams(new GridView.LayoutParams(300, 300));
-            imageView.setPadding(8, 8, 8, 8);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            imageView.setLayoutParams(new GridView.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, 600));
+         //   imageView.setPadding(4, 4, 4, 4);
         } else {
             imageView = (ImageView) convertView;
         }

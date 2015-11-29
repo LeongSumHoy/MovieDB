@@ -1,23 +1,25 @@
 package ot.sh.com.moviedb;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by brandon on 09/11/2015.
@@ -68,56 +70,29 @@ public class MovieDetailActivity extends ActionBarActivity {
             Intent intent = getActivity().getIntent();
 
             if (intent != null) {
-            // if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)) {
-
                 movieDetail = intent.getExtras().getParcelable("movie");
-                Log.d(LOG_TAG, movieDetail.title);
-                Log.d(LOG_TAG, movieDetail.plot);
-                Log.d(LOG_TAG, movieDetail.rating);
-                Log.d(LOG_TAG, movieDetail.release_date);
-                Log.d(LOG_TAG, movieDetail.url);
 
                 ((TextView) rootView.findViewById(R.id.title_textview)).setText(movieDetail.title);
                 ((TextView) rootView.findViewById(R.id.plot_textview)).setText(movieDetail.plot);
                  Float new_rate = Float.parseFloat(movieDetail.rating)/10*5;
                 ((RatingBar) rootView.findViewById(R.id.rating_bar)).setRating(new_rate);
-                ((TextView) rootView.findViewById(R.id.release_date_textview)).setText(movieDetail.release_date);
+                ((TextView) rootView.findViewById(R.id.release_date_textview)).setText(convertDateFormat(movieDetail.release_date));
                 Picasso.with(getActivity()).load(movieDetail.url).into((ImageView) rootView.findViewById(R.id.detailImageViewer));
-                /*
-                TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter(delimiter);
-                splitter.setString(movieDetail);
-                int i=0;
-                for (String s : splitter) {
-                    switch (i) {
-                        case 0:
-                            Picasso.with(getActivity()).load(s).into((ImageView) rootView.findViewById(R.id.detailImageViewer));
-                        case 1:
-                            ((TextView) rootView.findViewById(R.id.title_textview)).setText(s);
-                            break;
-                        case 2:
-                            ((TextView) rootView.findViewById(R.id.plot_textview)).setText(s);
-                            break;
-                        case 3:
-                            Float new_rate = Float.parseFloat(s)/10*5;
-                            ((RatingBar) rootView.findViewById(R.id.rating_bar)).setRating(new_rate);
-                        case 4:
-                            ((TextView) rootView.findViewById(R.id.release_date_textview)).setText(s);
-                        default: break;
-                    }
-                    Log.d(LOG_TAG, i+s);
-                    i++;
-                }
-                */
-/*
-                ((TextView) rootView.findViewById(R.id.title_textview))
-                        .setText(splitter[1]);
-                ((TextView) rootView.findViewById(R.id.plot_textview))
-                        .setText(splitter[2]);
-                        */
             }
             return rootView;
         }
 
+        public String convertDateFormat(String date) {
+            Date d = null;
+            SimpleDateFormat newFormat = new SimpleDateFormat("dd MMMM yyyy");
+            SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                d = oldFormat.parse(movieDetail.release_date);
+            } catch (Exception e) {
+                Log.e(LOG_TAG, String.valueOf(e));
+            }
+            return newFormat.format(d).toString();
+        }
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
             inflater.inflate(R.menu.moviefragment_menu, menu);
@@ -125,9 +100,6 @@ public class MovieDetailActivity extends ActionBarActivity {
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
-            // Handle action bar item clicks here. The action bar will
-            // automatically handle clicks on the Home/Up button, so long
-            // as you specify a parent activity in AndroidManifest.xml.
             int id = item.getItemId();
             if (id == R.id.action_settings) {
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
@@ -135,6 +107,5 @@ public class MovieDetailActivity extends ActionBarActivity {
             }
             return super.onOptionsItemSelected(item);
         }
-
     }
 }
