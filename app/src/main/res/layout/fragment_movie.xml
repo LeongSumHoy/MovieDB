@@ -21,7 +21,8 @@
                 android:gravity="center"
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/gridView"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:background="@color/background_material_dark">
             </GridView>
         </TableRow>
     </TableLayout>
