@@ -66,7 +66,6 @@ public class MovieDetailActivity extends ActionBarActivity {
 
             View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
 
-            // The detail Activity called via intent.  Inspect the intent for forecast data.
             Intent intent = getActivity().getIntent();
 
             if (intent != null) {
@@ -74,22 +73,34 @@ public class MovieDetailActivity extends ActionBarActivity {
 
                 ((TextView) rootView.findViewById(R.id.title_textview)).setText(movieDetail.title);
                 ((TextView) rootView.findViewById(R.id.plot_textview)).setText(movieDetail.plot);
-                 Float new_rate = Float.parseFloat(movieDetail.rating)/10*5;
-                ((RatingBar) rootView.findViewById(R.id.rating_bar)).setRating(new_rate);
+                ((TextView) rootView.findViewById(R.id.rate_textview)).setText(formatFloat(movieDetail.rating)+"/10");
                 ((TextView) rootView.findViewById(R.id.release_date_textview)).setText(convertDateFormat(movieDetail.release_date));
                 Picasso.with(getActivity()).load(movieDetail.url).into((ImageView) rootView.findViewById(R.id.detailImageViewer));
             }
             return rootView;
         }
 
+        public String formatFloat(String rate) {
+            final String ten = "10.0";
+            try {
+                if (rate.equals(ten)) { return "10"; }
+            } catch (Exception e) {
+                Log.e(LOG_TAG, String.valueOf(e));
+                return "0";
+            }
+            return rate;
+        }
+
         public String convertDateFormat(String date) {
             Date d = null;
             SimpleDateFormat newFormat = new SimpleDateFormat("dd MMMM yyyy");
             SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd");
+
             try {
-                d = oldFormat.parse(movieDetail.release_date);
+                d = oldFormat.parse(date);
             } catch (Exception e) {
                 Log.e(LOG_TAG, String.valueOf(e));
+                return "N/A";
             }
             return newFormat.format(d).toString();
         }

@@ -42,6 +42,7 @@ public class MovieFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(LOG_TAG, "onCreate");
 
         if (savedInstanceState == null && Util.getSavedPref(getActivity()).isEmpty() ) {
             updateMovies(Util.getSortPref(getContext()));
@@ -59,6 +60,7 @@ public class MovieFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        Log.d(LOG_TAG, "onSaveInstanceState");
         outState.putParcelableArrayList("movies", movieList);
         super.onSaveInstanceState(outState);
     }
@@ -66,6 +68,7 @@ public class MovieFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreateView");
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_movie, container, false);
 
@@ -77,15 +80,12 @@ public class MovieFragment extends Fragment {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 if (parent.getSelectedItem().equals(getString(R.string.pref_sort_label_popular)) ) {
                     Util.setSavedPref(getActivity(), getString(R.string.pref_sort_popularity));
                 } else if (parent.getSelectedItem().equals(getString(R.string.pref_sort_label_rate)) ) {
                     Util.setSavedPref(getActivity(), getString(R.string.pref_sort_rating));
                 }
-
                 updateMovies(Util.getSavedPref(getActivity()));
-              //  Toast.makeText(parent.getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -118,13 +118,11 @@ public class MovieFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_refresh) {
-            return true;
-        }
         return super.onOptionsItemSelected(item);
     }
 
     private void updateMovies(String sortOrder) {
+        Log.d(LOG_TAG, "updateMovies");
         FetchMoviesTask movieTask = new FetchMoviesTask();
         movieTask.execute(sortOrder);
     }
@@ -174,7 +172,7 @@ public class MovieFragment extends Fragment {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String discoverMoviesStr;
-            String key = "test";
+            String key = "028c2b9fc540ec7b951493fec02350dc";
 
             if (params.length == 0) {
                 return null;
