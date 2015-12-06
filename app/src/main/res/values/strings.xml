@@ -11,10 +11,12 @@
     <string name="pref_saved_key">ot.sh.com.moviedb</string>
     <string name="pref_saved_order">ot.sh.com.moviedb.SORTORDER</string>
     <string name="pref_saved_position">ot.sh.com.moviedb.POSITION</string>
+    <string name="pref_settings">ot.sh.com.moviedb.SETTINGS</string>
     <string name="pref_sort_title">Sort By</string>
     <string name="pref_sort_popularity">popularity.desc</string>
     <string name="pref_sort_rating">vote_average.desc</string>
     <string name="pref_sort_label_popular">Most Popular</string>
     <string name="pref_sort_label_rate">Highest Rating</string>
-    <string name="label_release_date">Release Date :   </string>
+    <string name="label_release_date">Release Date</string>
+    <string name="label_rating">Rating</string>
 </resources>

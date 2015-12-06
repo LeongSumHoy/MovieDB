@@ -2,29 +2,29 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="ot.sh.com.moviedb.MovieFragment">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TableRow>
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
             <Spinner
-                android:layout_width="wrap_content"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/spinner"
-                android:layout_gravity="top|right"
-                android:layout_weight="1" />
-        </TableRow>
-        <TableRow>
+                android:id="@+id/spinner" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
             <GridView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
                 android:numColumns="auto_fit"
-                android:gravity="center"
                 xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/gridView"
-                android:layout_weight="1"
-                android:background="@color/background_material_dark">
+                android:id="@+id/gridView">
             </GridView>
-        </TableRow>
-    </TableLayout>
-
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
