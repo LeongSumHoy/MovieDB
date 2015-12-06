@@ -42,7 +42,7 @@ public class MovieFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(LOG_TAG, "onCreate");
+        Log.d(LOG_TAG, "onCreate "+ Util.getSavedPref(getActivity()));
 
         if (savedInstanceState == null && Util.getSavedPref(getActivity()).isEmpty() ) {
             updateMovies(Util.getSortPref(getContext()));
@@ -77,9 +77,11 @@ public class MovieFragment extends Fragment {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.pref_sort_options, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+        Log.d(LOG_TAG, String.valueOf(spinner.getSelectedItemId()));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(LOG_TAG, "onItemSelected : " + position);
                 if (parent.getSelectedItem().equals(getString(R.string.pref_sort_label_popular)) ) {
                     Util.setSavedPref(getActivity(), getString(R.string.pref_sort_popularity));
                 } else if (parent.getSelectedItem().equals(getString(R.string.pref_sort_label_rate)) ) {
@@ -172,7 +174,7 @@ public class MovieFragment extends Fragment {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String discoverMoviesStr;
-            String key = "028c2b9fc540ec7b951493fec02350dc";
+            String key = "";
 
             if (params.length == 0) {
                 return null;
