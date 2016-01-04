@@ -19,4 +19,9 @@
     <string name="pref_sort_label_rate">Highest Rating</string>
     <string name="label_release_date">Release Date</string>
     <string name="label_rating">Rating</string>
+
+    <!-- SyncAdapter related -->
+    <string name="sync_account_type">ot.sh.com</string>
+    <string name="content_authority">ot.sh.com.moviedb</string>
+
 </resources>

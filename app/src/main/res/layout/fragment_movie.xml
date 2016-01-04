@@ -18,6 +18,13 @@
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
+            <!-- A RecyclerView with some commonly used attributes -->
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/movie_grid_rv"
+                android:scrollbars="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+            <!--
             <GridView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -25,6 +32,7 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/gridView">
             </GridView>
+            -->
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
