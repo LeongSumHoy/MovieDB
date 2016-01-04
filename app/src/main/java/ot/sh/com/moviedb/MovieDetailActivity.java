@@ -10,8 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -19,6 +17,7 @@ import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -26,10 +25,14 @@ import java.util.Date;
  */
 public class MovieDetailActivity extends ActionBarActivity {
     private final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
+    private ArrayList<Trailer> trailerList = new ArrayList<Trailer>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(LOG_TAG, "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, new MovieDetailFragment())
@@ -39,7 +42,8 @@ public class MovieDetailActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+         // Inflate the menu; this adds items to the action bar if it is present.
+        Log.d(LOG_TAG, "onCreateOptionsMenu");
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
@@ -63,22 +67,25 @@ public class MovieDetailActivity extends ActionBarActivity {
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            Log.d(LOG_TAG, "onCreateView");
+            ArrayList<Trailer> trailers = new ArrayList<Trailer>();
 
             View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
-
             Intent intent = getActivity().getIntent();
 
             if (intent != null) {
                 movieDetail = intent.getExtras().getParcelable("movie");
-
                 ((TextView) rootView.findViewById(R.id.title_textview)).setText(movieDetail.title);
                 ((TextView) rootView.findViewById(R.id.plot_textview)).setText(movieDetail.plot);
                 ((TextView) rootView.findViewById(R.id.rate_textview)).setText(formatFloat(movieDetail.rating)+"/10");
                 ((TextView) rootView.findViewById(R.id.release_date_textview)).setText(convertDateFormat(movieDetail.release_date));
                 Picasso.with(getActivity()).load(movieDetail.url).into((ImageView) rootView.findViewById(R.id.detailImageViewer));
+                new FetchTrailersTask().execute(movieDetail.id);
+
             }
             return rootView;
         }
+
 
         public String formatFloat(String rate) {
             final String ten = "10.0";
@@ -118,5 +125,6 @@ public class MovieDetailActivity extends ActionBarActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
     }
 }

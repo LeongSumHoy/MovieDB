@@ -42,11 +42,11 @@ public class SettingsActivity extends PreferenceActivity
 
         if ( !mBindingPreference ) {
             if (preference.getKey().equals(getString(R.string.pref_sort_key))) {
-                MovieFragment.FetchMoviesTask moviesTask = new MovieFragment.FetchMoviesTask();
-                String sortOption = value.toString();
-                Log.d(LOG_TAG, "sortOption : " + sortOption);
-                Util.setSettings(getApplicationContext(), sortOption);
-                moviesTask.execute(sortOption);
+     //           MovieFragment.FetchMoviesTask moviesTask = new MovieFragment.FetchMoviesTask();
+     //           String sortOption = value.toString();
+     //           Log.d(LOG_TAG, "sortOption : " + sortOption);
+     //           Util.setSettings(getApplicationContext(), sortOption);
+     //           moviesTask.execute(sortOption);
             }
         }
         return true;

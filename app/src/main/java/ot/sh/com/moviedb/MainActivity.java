@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.content.SharedPreferences;
 
+
 public class MainActivity extends ActionBarActivity {
     private final String LOG_TAG = MainActivity.class.getSimpleName();
     @Override
