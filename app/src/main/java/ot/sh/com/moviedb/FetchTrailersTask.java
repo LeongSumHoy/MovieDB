@@ -26,8 +26,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer
     private final String LOG_TAG = FetchTrailersTask.class.getSimpleName();
     private Activity aContext;
 
-    FetchTrailersTask() {}
-
     private ArrayList<Trailer> getTrailersFromJSON(String trailersStr) throws JSONException {
         final String M_RESULTS = "results";
         final String M_ID = "id";
@@ -50,7 +48,6 @@ public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer
             String site;
             String size;
             String type;
-            String BASE_URL = "http://www.youtube.com/watch?v=";
 
             JSONObject t = trailerArray.getJSONObject(i);
             id = t.getString(M_ID);
@@ -128,6 +125,16 @@ public class FetchTrailersTask extends AsyncTask<String, Void, ArrayList<Trailer
             Log.e(LOG_TAG, e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    protected void onPostExecute(ArrayList<Trailer> trailerList) {
+        Log.d(LOG_TAG, "=== onPostExecute() ");
+
+        Log.d(LOG_TAG, String.valueOf(trailerList.size()));
+        for (int i=0; i < trailerList.size(); i++) {
+            Log.d(LOG_TAG, trailerList.get(i).key);
+        }
     }
 
 }

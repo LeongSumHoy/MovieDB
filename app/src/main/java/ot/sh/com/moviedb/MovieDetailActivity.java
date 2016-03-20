@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +27,6 @@ import java.util.Date;
  */
 public class MovieDetailActivity extends ActionBarActivity {
     private final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
-    private ArrayList<Trailer> trailerList = new ArrayList<Trailer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class MovieDetailActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new MovieDetailFragment())
+                    .add(R.id.movie_detail_container, new MovieDetailFragment())
                     .commit();
         }
     }
@@ -59,72 +60,4 @@ public class MovieDetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class MovieDetailFragment extends Fragment {
-        private final String LOG_TAG = MovieDetailFragment.class.getSimpleName();
-        private Movie movieDetail;
-
-        public MovieDetailFragment() { setHasOptionsMenu(true); }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            Log.d(LOG_TAG, "onCreateView");
-            ArrayList<Trailer> trailers = new ArrayList<Trailer>();
-
-            View rootView = inflater.inflate(R.layout.fragment_movie_detail, container, false);
-            Intent intent = getActivity().getIntent();
-
-            if (intent != null) {
-                movieDetail = intent.getExtras().getParcelable("movie");
-                ((TextView) rootView.findViewById(R.id.title_textview)).setText(movieDetail.title);
-                ((TextView) rootView.findViewById(R.id.plot_textview)).setText(movieDetail.plot);
-                ((TextView) rootView.findViewById(R.id.rate_textview)).setText(formatFloat(movieDetail.rating)+"/10");
-                ((TextView) rootView.findViewById(R.id.release_date_textview)).setText(convertDateFormat(movieDetail.release_date));
-                Picasso.with(getActivity()).load(movieDetail.url).into((ImageView) rootView.findViewById(R.id.detailImageViewer));
-                new FetchTrailersTask().execute(movieDetail.id);
-
-            }
-            return rootView;
-        }
-
-
-        public String formatFloat(String rate) {
-            final String ten = "10.0";
-            try {
-                if (rate.equals(ten)) { return "10"; }
-            } catch (Exception e) {
-                Log.e(LOG_TAG, String.valueOf(e));
-                return "0";
-            }
-            return rate;
-        }
-
-        public String convertDateFormat(String date) {
-            Date d = null;
-            SimpleDateFormat newFormat = new SimpleDateFormat("dd MMMM yyyy");
-            SimpleDateFormat oldFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-            try {
-                d = oldFormat.parse(date);
-            } catch (Exception e) {
-                Log.e(LOG_TAG, String.valueOf(e));
-                return "N/A";
-            }
-            return newFormat.format(d).toString();
-        }
-        @Override
-        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            inflater.inflate(R.menu.moviefragment_menu, menu);
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-            int id = item.getItemId();
-            if (id == R.id.action_settings) {
-                startActivity(new Intent(getActivity(), SettingsActivity.class));
-                return true;
-            }
-            return super.onOptionsItemSelected(item);
-        }
-
-    }
 }

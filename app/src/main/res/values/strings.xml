@@ -21,7 +21,7 @@
     <string name="label_rating">Rating</string>
 
     <!-- SyncAdapter related -->
-    <string name="sync_account_type">ot.sh.com</string>
+    <string name="sync_account_type">ot.sh.moviedb</string>
     <string name="content_authority">ot.sh.com.moviedb</string>
 
 </resources>
