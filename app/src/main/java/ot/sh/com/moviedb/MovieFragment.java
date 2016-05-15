@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,7 +19,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,33 +36,26 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class MovieFragment extends Fragment {
-    private final String LOG_TAG = MovieFragment.class.getSimpleName();
-    private static MovieAdapter movieAdapter;
+    private final String LOG_TAG = MovieFragment.class.getCanonicalName();
+    // private static RecyclerAdapter mRecyclerAdapter;
     private ArrayList<Movie> movieList = new ArrayList<Movie>();
+    public static RecyclerView mRecyclerView;
+    private static RecyclerView.Adapter mAdapter;
+    private static RecyclerView.LayoutManager mLayoutManager;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "onCreate "+ Util.getSavedPref(getActivity()));
 
-        if (savedInstanceState == null && Util.getSavedPref(getActivity()).isEmpty() ) {
-            updateMovies(Util.getSortPref(getContext()));
-        } else
-        if (!Util.getSavedPref(getActivity()).isEmpty()) {
-            updateMovies(Util.getSavedPref(getActivity()));
-        } else
-        if (savedInstanceState.containsKey("movies")) {
-            movieList = savedInstanceState.getParcelableArrayList("movies");
-            movieAdapter.setDataChange(movieList);
-        }
-
         setHasOptionsMenu(true);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Log.d(LOG_TAG, "onSaveInstanceState");
-        outState.putParcelableArrayList("movies", movieList);
+        Log.d(LOG_TAG, "onSaveInstanceState : " + String.valueOf(movieList.size()));
+       // outState.putParcelableArrayList("movies", movieList);
         super.onSaveInstanceState(outState);
     }
 
@@ -82,9 +76,9 @@ public class MovieFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(LOG_TAG, "onItemSelected : " + position);
-                if (parent.getSelectedItem().equals(getString(R.string.pref_sort_label_popular)) ) {
+                if (parent.getSelectedItem().equals(getString(R.string.pref_sort_label_popular))) {
                     Util.setSavedPref(getActivity(), getString(R.string.pref_sort_popularity));
-                } else if (parent.getSelectedItem().equals(getString(R.string.pref_sort_label_rate)) ) {
+                } else if (parent.getSelectedItem().equals(getString(R.string.pref_sort_label_rate))) {
                     Util.setSavedPref(getActivity(), getString(R.string.pref_sort_rating));
                 }
                 updateMovies(Util.getSavedPref(getActivity()));
@@ -95,19 +89,15 @@ public class MovieFragment extends Fragment {
             }
         });
 
-        // gridview
-        GridView gridview = (GridView) rootView.findViewById(R.id.gridView);
-        movieAdapter = new MovieAdapter(getActivity(), movieList);
-        gridview.setAdapter(movieAdapter);
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Toast.makeText(getContext(), " " + position, Toast.LENGTH_SHORT).show();
-                Movie m = movieAdapter.getItem(position);
-                Intent intent = new Intent(getActivity(), MovieDetailActivity.class).putExtra("movie", m);
-                startActivity(intent);
-            }
-        });
+        // RecyclerView Grid Layout.
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_grid_view);
+        mRecyclerView.setHasFixedSize(true);
+        // user Grid layout manager
+        mLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        // Load adapter
+        mAdapter = new RecyclerAdapter(getActivity(), movieList);
+        mRecyclerView.setAdapter(mAdapter);
 
         return rootView;
     }
@@ -124,18 +114,68 @@ public class MovieFragment extends Fragment {
     }
 
     private void updateMovies(String sortOrder) {
-        Log.d(LOG_TAG, "updateMovies");
+        Log.d(LOG_TAG, "updateMovies : " + sortOrder);
         FetchMoviesTask movieTask = new FetchMoviesTask();
         movieTask.execute(sortOrder);
     }
 
-    public static class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>  > {
-        private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(LOG_TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "onDestroy");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(LOG_TAG, "onDetach");
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(LOG_TAG, "onAttach");
+    }
+
+
+    public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>  > {
+        private final String LOG_TAG = FetchMoviesTask.class.getCanonicalName();
         private Activity aContext;
 
-        public FetchMoviesTask() {}
-
         private ArrayList<Movie> getMovieDataFromJSON(String discoverMoviesStr) throws JSONException {
+            Log.d(LOG_TAG, "getMovieDataFromJSON");
+
             final String M_RESULTS = "results";
             final String M_ORG_TITLE = "original_title";
             final String M_POSTER_PATH = "poster_path";
@@ -164,6 +204,7 @@ public class MovieFragment extends Fragment {
                 vote_average = movie.getString(M_VOTE_AVG);
                 release_date = movie.getString(M_RELEASE_DATE);
 
+               // Log.d(LOG_TAG, original_title+"|"+poster_path);
                 movieList.add(new Movie(BASE_URL + PIC_SIZE + poster_path, original_title, overview, vote_average, release_date));
             }
             return movieList;
@@ -171,10 +212,12 @@ public class MovieFragment extends Fragment {
 
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
+            Log.d(LOG_TAG, "doInBackground");
+
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             String discoverMoviesStr;
-            String key = "";
+            String key = "028c2b9fc540ec7b951493fec02350dc";
 
             if (params.length == 0) {
                 return null;
@@ -191,6 +234,7 @@ public class MovieFragment extends Fragment {
                         .appendQueryParameter(KEY_PARAM, key)
                         .build();
                 URL url = new URL(builtUri.toString());
+                Log.d(LOG_TAG, url.toString());
 
                 // Create request to movieDB.org
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -234,9 +278,15 @@ public class MovieFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Movie> movieList) {
-            movieAdapter.setDataChange(movieList);
+        protected void onPostExecute(ArrayList<Movie> dataset) {
+            Log.d(LOG_TAG, "onPostExecute : " + String.valueOf(dataset.size()));
+
+            if (dataset != null) {
+                mAdapter = new RecyclerAdapter(getActivity(), dataset);
+                mRecyclerView.setAdapter(mAdapter);
+            }
         }
+
     }
 
 }

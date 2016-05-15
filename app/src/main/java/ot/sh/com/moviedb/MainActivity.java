@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.content.SharedPreferences;
 
 public class MainActivity extends ActionBarActivity {
-    private final String LOG_TAG = MainActivity.class.getSimpleName();
+    private final String LOG_TAG = MainActivity.class.getCanonicalName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -13,7 +13,7 @@ public class SettingsActivity extends PreferenceActivity
         implements Preference.OnPreferenceChangeListener {
 
     boolean mBindingPreference;
-    private final String LOG_TAG = "MovieSettings";
+    private final String LOG_TAG = SettingsActivity.class.getCanonicalName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class SettingsActivity extends PreferenceActivity
     public boolean onPreferenceChange(Preference preference, Object value) {
         String stringValue = value.toString();
         Log.d(LOG_TAG, "onPreferenceChange : "+ stringValue);
-
+/*
         if ( !mBindingPreference ) {
             if (preference.getKey().equals(getString(R.string.pref_sort_key))) {
                 MovieFragment.FetchMoviesTask moviesTask = new MovieFragment.FetchMoviesTask();
@@ -49,6 +49,7 @@ public class SettingsActivity extends PreferenceActivity
                 moviesTask.execute(sortOption);
             }
         }
+        */
         return true;
     }
 }

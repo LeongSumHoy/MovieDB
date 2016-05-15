@@ -25,7 +25,7 @@ import java.util.Date;
  * Created by brandon on 09/11/2015.
  */
 public class MovieDetailActivity extends ActionBarActivity {
-    private final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
+    private final String LOG_TAG = MovieDetailActivity.class.getCanonicalName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
