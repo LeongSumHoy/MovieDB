@@ -1,7 +1,6 @@
 package ot.sh.com.moviedb;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.Spinner;
 
 import org.json.JSONArray;
@@ -36,7 +34,7 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class MovieFragment extends Fragment {
-    private final String LOG_TAG = MovieFragment.class.getCanonicalName();
+    private final String LOG_TAG = MovieFragment.class.getSimpleName();
     // private static RecyclerAdapter mRecyclerAdapter;
     private ArrayList<Movie> movieList = new ArrayList<Movie>();
     public static RecyclerView mRecyclerView;
@@ -170,8 +168,9 @@ public class MovieFragment extends Fragment {
 
 
     public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>  > {
-        private final String LOG_TAG = FetchMoviesTask.class.getCanonicalName();
+        private final String LOG_TAG = FetchMoviesTask.class.getSimpleName();
         private Activity aContext;
+        private String type;
 
         private ArrayList<Movie> getMovieDataFromJSON(String discoverMoviesStr) throws JSONException {
             Log.d(LOG_TAG, "getMovieDataFromJSON");
@@ -179,7 +178,7 @@ public class MovieFragment extends Fragment {
             final String M_RESULTS = "results";
             final String M_ORG_TITLE = "original_title";
             final String M_POSTER_PATH = "poster_path";
-            final String M_BACKDROP_PATH = "backdrop_path";
+            final String M_ID = "id";
             final String M_OVERVIEW = "overview";
             final String M_VOTE_AVG = "vote_average";
             final String M_RELEASE_DATE = "release_date";
@@ -190,6 +189,7 @@ public class MovieFragment extends Fragment {
 
             for (int i = 0; i < movieArray.length(); i++) {
                 String original_title;
+                String id;
                 String overview;
                 String vote_average;
                 String release_date;
@@ -199,13 +199,14 @@ public class MovieFragment extends Fragment {
 
                 JSONObject movie = movieArray.getJSONObject(i);
                 original_title = movie.getString(M_ORG_TITLE);
+                id = movie.getString(M_ID);
                 poster_path = movie.getString(M_POSTER_PATH);
                 overview = movie.getString(M_OVERVIEW);
                 vote_average = movie.getString(M_VOTE_AVG);
                 release_date = movie.getString(M_RELEASE_DATE);
 
-               // Log.d(LOG_TAG, original_title+"|"+poster_path);
-                movieList.add(new Movie(BASE_URL + PIC_SIZE + poster_path, original_title, overview, vote_average, release_date));
+                Log.d(LOG_TAG, id+"|"+original_title+"|"+poster_path);
+                movieList.add(new Movie(id, BASE_URL + PIC_SIZE + poster_path, original_title, overview, vote_average, release_date));
             }
             return movieList;
         }

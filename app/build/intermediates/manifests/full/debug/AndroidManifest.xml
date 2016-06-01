@@ -9,6 +9,7 @@
         android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +17,22 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
+        <activity
+            android:name="ot.sh.com.moviedb.MovieDetailActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName="ot.sh.com.moviedb.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity
+            android:name="ot.sh.com.moviedb.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName="ot.sh.com.moviedb.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
         <activity android:name="ot.sh.com.moviedb.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -9,13 +9,15 @@ import android.support.annotation.NonNull;
  */
 
 public class Movie implements Parcelable {
+    String id;
     String url;
     String title;
     String plot;
     String rating;
     String release_date;
 
-    public Movie(String url, String title, String plot, String rating, String release_date) {
+    public Movie(String id, String url, String title, String plot, String rating, String release_date) {
+        this.id = id;
         this.url = url;
         this.title = title;
         this.plot = plot;
@@ -24,6 +26,7 @@ public class Movie implements Parcelable {
     }
 
     private Movie(Parcel in) {
+        id = in.readString();
         url = in.readString();
         title = in.readString();
         plot = in.readString();
@@ -38,6 +41,7 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel p, int i) {
+        p.writeString(id);
         p.writeString(url);
         p.writeString(title);
         p.writeString(plot);

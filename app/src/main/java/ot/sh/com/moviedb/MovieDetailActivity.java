@@ -1,12 +1,12 @@
 package ot.sh.com.moviedb;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+
 
 /**
  * Created by brandon on 09/11/2015.
