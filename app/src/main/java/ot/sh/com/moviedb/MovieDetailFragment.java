@@ -3,17 +3,18 @@ package ot.sh.com.moviedb;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,12 +41,11 @@ public class MovieDetailFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private final String LOG_TAG = MovieDetailFragment.class.getSimpleName();
     private Movie movieInfo;
+    private ArrayList<Movie> movieList = new ArrayList<Movie>();
     private ArrayList<Trailer> trailerList = new ArrayList<Trailer>();
     public static RecyclerView mRecyclerView;
     private static RecyclerView.Adapter mAdapter;
     private static RecyclerView.LayoutManager mLayoutManager;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,10 +68,10 @@ public class MovieDetailFragment extends Fragment {
             ((TextView) view.findViewById(R.id.rate_textview)).setText(formatFloat(movieInfo.rating)+"/10");
             ((TextView) view.findViewById(R.id.release_date_textview)).setText(convertDateFormat(movieInfo.release_date));
             Picasso.with(getActivity()).load(movieInfo.url).into((ImageView) view.findViewById(R.id.detailImageViewer));
-           //  Picasso.with(getActivity()).load("http://img.youtube.com/vi/PfBVIHgQbYk/maxresdefault.jpg").into((ImageView) view.findViewById(R.id.trailerImage));
 
-            // RecyclerView Grid Layout.
-            mRecyclerView = (RecyclerView) view.findViewById(R.id.trailerImage);
+            getTrailers(movieInfo.id);
+            // RecyclerView Linear Layout.
+            mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_trailer_view);
             mRecyclerView.setHasFixedSize(true);
             // user Grid layout manager
             mLayoutManager = new LinearLayoutManager(getActivity());
@@ -79,9 +79,6 @@ public class MovieDetailFragment extends Fragment {
             // Load adapter
             mAdapter = new TrailerAdapter(getActivity(), trailerList);
             mRecyclerView.setAdapter(mAdapter);
-
-            getTrailers(movieInfo.id);
-
         }
         return view;
     }
@@ -111,6 +108,54 @@ public class MovieDetailFragment extends Fragment {
             return "N/A";
         }
         return newFormat.format(d).toString();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(LOG_TAG, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(LOG_TAG, "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(LOG_TAG, "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(LOG_TAG, "onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(LOG_TAG, "onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(LOG_TAG, "onDestroy");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(LOG_TAG, "onDetach");
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(LOG_TAG, "onAttach");
     }
 
 

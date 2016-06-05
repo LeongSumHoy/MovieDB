@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:2:1-39:12
+ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:2:1-40:12
 	package
 		ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:3:5-32
 		INJECTED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml
@@ -22,7 +22,7 @@ ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xm
 	android:name
 		ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:6:22-78
 application
-ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:8:5-37:19
+ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:8:5-38:19
 MERGED from [com.android.support:appcompat-v7:23.4.0] /Users/Brandon/StudioProjects/MovieDB/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:animated-vector-drawable:23.4.0] /Users/Brandon/StudioProjects/MovieDB/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/23.4.0/AndroidManifest.xml:7:5-20
 MERGED from [com.android.support:support-vector-drawable:23.4.0] /Users/Brandon/StudioProjects/MovieDB/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/23.4.0/AndroidManifest.xml:7:5-20
@@ -81,6 +81,10 @@ category#android.intent.category.LAUNCHER
 ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:34:17-77
 	android:name
 		ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:34:27-74
+activity#ot.sh.com.moviedb.ReviewActivity
+ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:37:9-61
+	android:name
+		ADDED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml:37:19-49
 uses-sdk
 INJECTED from /Users/Brandon/StudioProjects/MovieDB/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
 MERGED from [com.android.support:appcompat-v7:23.4.0] /Users/Brandon/StudioProjects/MovieDB/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/AndroidManifest.xml:21:5-23:78
