@@ -26,11 +26,13 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public static class ViewHolder_Trailer extends RecyclerView.ViewHolder {
         public ImageView mImageView;
+        public Button mButtonReview;
 
         public ViewHolder_Trailer (View v) {
             super(v);
             Log.d(LOG_TAG, "ViewHolder_Trailer");
             mImageView = (ImageView) v.findViewById(R.id.trailer_image);
+            mButtonReview = (Button) v.findViewById(R.id.review_button);
         }
     }
 
@@ -78,9 +80,10 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    private void configureViewHolder_Trailer(ViewHolder_Trailer vh_trailer, int position) {
+    private void configureViewHolder_Trailer(ViewHolder_Trailer vh_trailer, final int position) {
         Log.d(LOG_TAG, "configureViewHolder_Trailer");
         Trailer t = (Trailer) mDataset.get(position);
+
         if (t != null) {
             for(int i=0; i <= mDataset.size(); i++) {
                 Picasso.with(mContext).load("http://img.youtube.com/vi/" + mDataset.get(position).key + "/"+i+".jpg").into(vh_trailer.mImageView);
@@ -89,7 +92,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         vh_trailer.mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v="+mDataset.get(position).key)));
             }
         });
     }

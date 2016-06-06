@@ -70,6 +70,14 @@ public class MovieDetailFragment extends Fragment {
             Picasso.with(getActivity()).load(movieInfo.url).into((ImageView) view.findViewById(R.id.detailImageViewer));
 
             getTrailers(movieInfo.id);
+
+            ((Button) view.findViewById(R.id.review_button)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
             // RecyclerView Linear Layout.
             mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_trailer_view);
             mRecyclerView.setHasFixedSize(true);
@@ -79,6 +87,15 @@ public class MovieDetailFragment extends Fragment {
             // Load adapter
             mAdapter = new TrailerAdapter(getActivity(), trailerList);
             mRecyclerView.setAdapter(mAdapter);
+            Log.d(LOG_TAG, "DEBUG : " + String.valueOf(trailerList.size()));
+
+            ((Button) view.findViewById(R.id.review_button)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(LOG_TAG, "CLICK !!!!!!!!");
+                    Log.d(LOG_TAG, String.valueOf(trailerList.size()));
+                }
+            });
         }
         return view;
     }
