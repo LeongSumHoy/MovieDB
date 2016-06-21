@@ -68,16 +68,17 @@ public class MovieDetailFragment extends Fragment {
             ((TextView) view.findViewById(R.id.rate_textview)).setText(formatFloat(movieInfo.rating)+"/10");
             ((TextView) view.findViewById(R.id.release_date_textview)).setText(convertDateFormat(movieInfo.release_date));
             Picasso.with(getActivity()).load(movieInfo.url).into((ImageView) view.findViewById(R.id.detailImageViewer));
-
-            getTrailers(movieInfo.id);
-
             ((Button) view.findViewById(R.id.review_button)).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent(getContext(), ReviewActivity.class);
+                    intent.putExtra("movie_id", movieInfo.id);
+                    getContext().startActivity(intent);
                 }
             });
 
+
+            getTrailers(movieInfo.id);
             // RecyclerView Linear Layout.
             mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_trailer_view);
             mRecyclerView.setHasFixedSize(true);
@@ -87,15 +88,7 @@ public class MovieDetailFragment extends Fragment {
             // Load adapter
             mAdapter = new TrailerAdapter(getActivity(), trailerList);
             mRecyclerView.setAdapter(mAdapter);
-            Log.d(LOG_TAG, "DEBUG : " + String.valueOf(trailerList.size()));
 
-            ((Button) view.findViewById(R.id.review_button)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(LOG_TAG, "CLICK !!!!!!!!");
-                    Log.d(LOG_TAG, String.valueOf(trailerList.size()));
-                }
-            });
         }
         return view;
     }
@@ -125,6 +118,12 @@ public class MovieDetailFragment extends Fragment {
             return "N/A";
         }
         return newFormat.format(d).toString();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Log.d(LOG_TAG, "onSaveInstanceState : ");
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -207,7 +206,6 @@ public class MovieDetailFragment extends Fragment {
                 String size;
                 String type;
                 String BASE_URL = "https://www.youtube.com/watch?v=";
-
 
                 JSONObject trailer = trailerArray.getJSONObject(i);
                 id = trailer.getString(M_ID);
@@ -295,13 +293,13 @@ public class MovieDetailFragment extends Fragment {
             Log.d(LOG_TAG, "onPostExecute : " + String.valueOf(dataset.size()));
 
             if (dataset != null) {
+                trailerList = dataset;
+                Log.d(LOG_TAG, "trailerList X " + String.valueOf(trailerList.size()));
                 mAdapter = new TrailerAdapter(getActivity(), dataset);
                 mRecyclerView.setAdapter(mAdapter);
             }
-
         }
 
     }
-
 
 }

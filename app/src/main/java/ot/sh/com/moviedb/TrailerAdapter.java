@@ -26,13 +26,11 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public static class ViewHolder_Trailer extends RecyclerView.ViewHolder {
         public ImageView mImageView;
-        public Button mButtonReview;
 
         public ViewHolder_Trailer (View v) {
             super(v);
             Log.d(LOG_TAG, "ViewHolder_Trailer");
             mImageView = (ImageView) v.findViewById(R.id.trailer_image);
-            mButtonReview = (Button) v.findViewById(R.id.review_button);
         }
     }
 
@@ -61,15 +59,12 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 viewHolder = new ViewHolder_Trailer(vd);
                 break;
         }
-
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         Log.d(LOG_TAG, "onBindViewHolder");
-//        viewHolder.mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        // viewHolder.mImageView.setLayoutParams(new GridView.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, 600));
         Log.d(LOG_TAG, "vh.getItemViewType : "+String.valueOf(viewHolder.getItemViewType()));
         switch (viewHolder.getItemViewType()) {
             case TRAILER :
@@ -113,7 +108,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public int getItemViewType(int position) {
         Log.d(LOG_TAG, "getItemViewType");
-
         if (mDataset.get(position) instanceof Trailer) {
             return TRAILER;
         }
