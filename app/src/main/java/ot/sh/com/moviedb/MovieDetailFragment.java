@@ -12,6 +12,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -68,15 +71,6 @@ public class MovieDetailFragment extends Fragment {
             ((TextView) view.findViewById(R.id.rate_textview)).setText(formatFloat(movieInfo.rating)+"/10");
             ((TextView) view.findViewById(R.id.release_date_textview)).setText(convertDateFormat(movieInfo.release_date));
             Picasso.with(getActivity()).load(movieInfo.url).into((ImageView) view.findViewById(R.id.detailImageViewer));
-            ((Button) view.findViewById(R.id.review_button)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getContext(), ReviewActivity.class);
-                    intent.putExtra("movie_id", movieInfo.id);
-                    getContext().startActivity(intent);
-                }
-            });
-
 
             getTrailers(movieInfo.id);
             // RecyclerView Linear Layout.
@@ -91,6 +85,39 @@ public class MovieDetailFragment extends Fragment {
 
         }
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.moviedetailfragment_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.action_favorite:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+
+            case R.id.action_review:
+                Intent intent = new Intent(getContext(), ReviewActivity.class);
+                intent.putExtra("movie_id", movieInfo.id);
+                getContext().startActivity(intent);
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+
     }
 
     private void getTrailers(String id) {
