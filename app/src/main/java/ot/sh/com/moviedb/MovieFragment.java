@@ -102,7 +102,7 @@ public class MovieFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.moviefragment_menu, menu);
+        inflater.inflate(R.menu.main_menu, menu);
     }
 
     @Override
