@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">moviedb</string>
+    <string name="action_settings">Settings</string>
+
+    <!--  MainActivityFragment  -->
+    <string name="sort_by_popularity">Most Popular</string>
+    <string name="sort_by_rates">Highest Rating</string>
+    <string name="pref_file_key">com.sh.ot.moviedb</string>
+    <string name="saved_spinner_state">com.sh.ot.moviedb.SORTORDER</string>
+    <string name="popularity_desc">popularity.desc</string>
+    <string name="rates_desc">vote_average.desc</string>
+
+    <!-- DetailActivityFragment -->
+    <string name="action_favorite">Favorite</string>
+    <string name="action_review">Reviews</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_review">ReviewActivity</string>
+</resources>
